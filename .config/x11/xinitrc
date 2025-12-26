@@ -1,16 +1,14 @@
 #!/bin/sh
 
-
-
 xrdb merge $HOME/.config/x11/Xresources
 xset r rate 300 60 &
 picom --backend glx --vsync --blur-background --shadow-ignore-shaped -f --config $HOME/.config/picom/picom.conf &
 
 feh --bg-fill $HOME/.local/share/wall.png --no-fehbg &
-/usr/lib/notification-daemon-1.0/notification-daemon &
 $HOME/.local/bin/remap &
 $HOME/.local/bin/battery_notify &
-xidlehook --not-when-audio --not-when-fullscreen --timer 60 '$HOME/.local/bin/betterlockscreen -l blur -q' '' &
+xidlehook --not-when-audio --not-when-fullscreen --timer 60 '$HOME/.local/bin/betterlockscreen -l dim -q' '' &
+xbanish -i all -t 3 -s &
 sxhkd &
 dunst &
 
