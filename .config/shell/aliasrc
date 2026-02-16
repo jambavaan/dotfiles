@@ -12,14 +12,21 @@ for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
 done; unset command
 
 # Commands/Functions
-alias ls="ls -h --color=auto --group-directories-first"
-alias grep="grep --color=always"
-alias diff="diff --color=always"
-alias wget="wget --hsts-file $XDG_CACHE_DIR/wget/history"
-alias fzf="fzf --layout=reverse --tac"
+alias \
+\
+ls="ls -h --color=auto --group-directories-first" \
+grep="grep --color=always" \
+diff="diff --color=always" \
+wget="wget --hsts-file $XDG_CACHE_DIR/wget/history" \
+fzf="fzf --layout=reverse --tac" \
+sl="sl -cae" \
+rel="xrdb merge $HOME/.dotfiles/.config/x11/Xresources && kill -USR1 $(pidof st)" \
+# man="batman" \
+mv="mv -i" \
+rm="rm -Iv" \
 
-pacsrt(){ grep -iE 'installed|removed' /var/log/pacman.log | sort -k 1 | uniq | tail -n 25 }
-hzh() { < ~/.cache/zsh/* | sed 's/: [0-9]*:[0-9]*;//g' | uniq | fzf --layout=reverse --tac | tr -d '\n'| xclip -selection c }
+pacsrt(){ grep -aiE 'installed|reinstalled|removed' /var/log/pacman.log | sort -k 1 | uniq | tail -n 25 }
+hzh() { < ~/.cache/zsh/* | sed 's/: [0-9]*:[0-9]*;//g' | sort | uniq | fzf --layout=reverse --tac | tr -d '\n'| xclip -selection c }
 
 # devour
 #alias mpv="devour mpv"

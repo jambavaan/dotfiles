@@ -8,33 +8,43 @@
 # Global Variable 
 export EDITOR="nvim"
 export TERMINAL="st"
-export BROWSER="thorium-browser"
+export BROWSER="firefox"
 
 # Adding my scripts Folder to my PATH variable
-export PATH="$PATH:$(find ~/.local/bin ~/.local/share/nvim/mason/bin | paste -sd ':' -)"
+export PATH=$(find ~/.local/bin | paste -sd ':' -):$PATH
 
 # Clean the ~/ 
-export XDG_DOWNLOAD_HOME="$HOME/dwla"
-export XDG_DOCUMENTS_HOME="$HOME/docs"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_PICTURES_HOME="$HOME/pics"
-export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_DOWNLOAD_HOME=$HOME/dwla
+export XDG_DOCUMENTS_HOME=$HOME/docs
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_PICTURES_HOME=$HOME/pics
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
 
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export HISTFILE="$XDG_CACHE_HOME/zsh/history"
-export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
-export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
-export CARGO_HOME="$XDG_DATA_HOME/cargo"
-export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+export HISTFILE=$XDG_CACHE_HOME/zsh/history
+export LESSHISTFILE=$XDG_CACHE_HOME/less/history
+export RUSTUP_HOME=$XDG_DATA_HOME/rustup
+export CARGO_HOME=$XDG_DATA_HOME/cargo
+export DOCKER_CONFIG=$XDG_CONFIG_HOME/docker
+export GNUPGHOME=$XDG_DATA_HOME/gnupg
 #export XAUTHORITY=/tmp/Xauthority
-
+export PYTHON_HISTORY=$XDG_STATE_HOME/python_history
 export WATCH_INTERVAL=0.1
 
-# Music Player Daemon
-#[ ! -s ~/.config/mpd/pid ] && mpd
+export MANPAGER="nvim +Man!"
 
-# START X
+# Music Player Daemon
+# [ ! -s ~/.config/mpd/pid ] && mpd
+
+# START X server
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-  exec startx
+    exec startx > /dev/null 2> ~/.cache/dwm_logs
 fi
+
+# Dark Theme : Adwaita
+
+export GTK_THEME=Adwaita:dark
+export GTK2_RC_FILES=/usr/share/themes/Adwaita-dark/gtk-2.0/gtkrc
+export QT_STYLE_OVERRIDE=Adwaita-Dark

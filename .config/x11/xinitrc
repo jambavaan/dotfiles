@@ -5,12 +5,13 @@ xset r rate 300 60 &
 picom --backend glx --vsync --blur-background --shadow-ignore-shaped -f --config $HOME/.config/picom/picom.conf &
 
 feh --bg-fill $HOME/.local/share/wall.png --no-fehbg &
-$HOME/.local/bin/remap &
-$HOME/.local/bin/battery_notify &
+# $HOME/.local/bin/remap &
+# $HOME/.local/bin/battery_notify &
 xidlehook --not-when-audio --not-when-fullscreen --timer 60 '$HOME/.local/bin/betterlockscreen -l dim -q' '' &
-xbanish -i all -t 3 -s &
-sxhkd &
+# sxhkd &
+xbanish -t 3 -s &
 dunst &
+mpd-mpris > /dev/null &
 
 dash $HOME/.config/chadwm_setup/chadwm/bar.sh &
-while type chadwm >/dev/null; do chadwm && continue || break; done
+while type chadwm > /dev/null; do chadwm && continue || break; done

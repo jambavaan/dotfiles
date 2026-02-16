@@ -25,57 +25,23 @@ autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit
-_comp_options+=(globdots)		# Include hidden files.
+_comp_options+=(globdots)       # Include hidden files.
 setopt globdots
 
 # Case Insensitive
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 autoload -Uz compinit && compinit
 
-# vi mode
-bindkey -v
+set -o emacs
 export KEYTIMEOUT=1
+bindkey -M menuselect '^[[Z' reverse-menu-complete #<S-Tab> for reverse menu
 
-# Use vim keys in tab complete menu:
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -M vicmd "^[^?" backward-kill-word 
-bindkey -M vicmd "^H" kill-word 
-bindkey -v '^?' backward-delete-char
-bindkey '^R' history-incremental-search-backward
+autoload -U select-word-style
+select-word-style bash
 
-# Change cursor shape for different vi modes.
-function zle-keymap-select () {
-    case $KEYMAP in
-	vicmd) echo -ne '\e[1 q';;      # block (to use a thick curser change '\e[1 q' to '\e[5 q')
-       viins|main) echo -ne '\e[5 q';; # beam
-    esac
-}
-zle -N zle-keymap-select
-zle-line-init() {
-    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-    echo -ne "\e[5 q"
-}
-zle -N zle-line-init
-echo -ne '\e[5 q' # Use beam shape cursor on startup.
-preexec() { echo -ne '\e[1 q' ;} # Use beam shape cursor for each new prompt.
-
-
-# Keys 
-bindkey "^a" beginning-of-line
-bindkey "^z" end-of-line
-bindkey "^H" kill-word 
-bindkey "^[^?" backward-kill-word 
-bindkey -M menuselect '^[[Z' reverse-menu-complete
-
-# Vim From Terminal
-autoload edit-command-line; zle -N edit-command-line
-bindkey '^e' edit-command-line
-
-# Load any Alias and Shortcuts 
-##[ -f "$HOME/.config/shell/shortcutrc" ] && source "$HOME/.config/shell/shortcutrc"
+# Load
+# [ -f "$HOME/.config/shell/shortcutrc" ] && source "$HOME/.config/shell/shortcutrc"
+# [ -f "$HOME/.config/shell/vim_bindrc" ] && source "$HOME/.config/shell/vim_bindrc"
 source "$HOME/.config/shell/aliasrc"
 
 # Load zsh-syntax-highlighting; should be last.
