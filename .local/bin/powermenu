@@ -3,7 +3,7 @@
 case "$(printf "Hibernate\\nRestart\\nLock\\nSleep\\nPoweroff" | dmenu -l 5 -i -p "Select : ")" in
 	"Poweroff") systemctl poweroff;;
 	"Restart") systemctl reboot;;
-	"Lock") betterlockscreen -l blur;;
-	"Sleep")  betterlockscreen -l blur & systemctl suspend-then-hibernate;;
+	"Lock") betterlockscreen -l;;
+	"Sleep")  betterlockscreen -l  & sleep 1 && systemctl suspend-then-hibernate;;
 	"Hibernate") betterlockscreen -l blur & systemctl hibernate;;
 esac

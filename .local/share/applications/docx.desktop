@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=Doc Viwer
+Exec=/usr/bin/onlyoffice-desktopeditors %u

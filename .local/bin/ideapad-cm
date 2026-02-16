@@ -5,7 +5,7 @@
 
 function _print_usage() {
 	echo "Usage:"
-	echo -e "\t${0} enable|disable|status [acpi_call|ideapad_laptop]"
+	echo -e "\t${0} enable|disable|status|toggle [acpi_call|ideapad_laptop]"
 }
 
 function _acpi_call() {
@@ -34,12 +34,18 @@ function _ideapad_laptop() {
 	_command="${1}"
 	if [ "${_command}" == "enable" ]
 	then
-		# TODO: Don't enable conservation mode if it's already enabled
-		sudo bash -c "echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode"
+        [ $(cat "/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode") -eq 1 ] && \
+            echo "Battery conservation mode is ALREADY enabled." && \
+            exit
+
+           sudo bash -c "echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode"
 	elif [ "${_command}" == "disable" ]
 	then
-		# TODO: Don't disable conservation mode if it's already disabled
-		sudo bash -c "echo 0 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode"
+        [ $(cat "/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode") -eq 0 ] && \
+            echo "Battery conservation mode is ALREADY disabled." && \
+            exit
+
+            sudo bash -c "echo 0 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode"
 	elif [ "${_command}" == "status" ]
 	then
 		_status_value="$( cat /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode )"
@@ -66,6 +72,15 @@ then
 elif [ "${1}" == "status" ]
 then
 	_command="status"
+elif [ "${1}" == "toggle" ]
+then
+        if [[ $(cat "/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode") -eq 0 ]]
+        then 
+	          _command="enable"
+        elif [[ $(cat "/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode") -eq 1 ]]
+        then
+	          _command="disable"
+        fi
 else
 	_print_usage
 	exit 1
