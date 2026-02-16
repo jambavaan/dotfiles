@@ -17,7 +17,7 @@
 
 filetype plugin on
 
-let mapleader = ","
+let mapleader = " "
 set t_Co=256
 set termguicolors
 set belloff=all
@@ -46,6 +46,9 @@ set numberwidth=1
 set laststatus=2
 set omnifunc=syntaxcomplete#Complete
 set viminfo+=n~/.vim/viminfo
+set clipboard+=unnamedplus
+set iskeyword-=_
+set iskeyword-=-
 
 syntax enable
 syntax on
@@ -90,23 +93,31 @@ inoremap <expr> <CR> pumvisible() ? "<C-y>" :"<CR>"
 inoremap <expr> <ESC> pumvisible() ? "<C-e>" : "<ESC>"
 
 inoremap jk <esc>
+inoremap <C-n><C-p> <esc>
 inoremap kj <esc>
+inoremap <C-p><C-n> <esc>
 
-nnoremap <Leader>a :tabprevious<CR>
+nnoremap <leader>a :tabprevious<CR>
 nnoremap <leader>f :tabnext<CR>
+nnoremap ; :
 
-"NERDTree config
-nnoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
 
-" Start NERDTree and put the cursor back in the other window.
-" autocmd VimEnter * NERDTree | wincmd p
 
-" Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+"Normal mode: duplicate line and stay at same position
+nnoremap <C-\> mmyyp`m
+
+" Insert mode: duplicate line (will exit insert mode temporarily)
+inoremap <C-\> <Esc>mmyyp`mi
 
 let g:vimwiki_list = [{'path': '$HOME/stg/ld_d/school/vault/B.TECH/','syntax': 'markdown', 'ext': '.md'}]
 
 autocmd BufWritePost ~/.local/share/dwm_setup/dwmblocks/config.h !cd ~/.local/share/dwm_setup/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
 
+set viminfofile=$XDG_CONFIG_HOME/vim/viminfo
+
 :so ~/.config/vim/snippet.vim
+:so ~/.config/vim/autocmd.vim
