@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+
+#INC play count
+sticker=$(rmpc sticker get "$FILE" "playCount" | jq -r '.value')
+if [ -z "$sticker" ]; then
+    rmpc sticker set "$FILE" "playCount" "1"
+else
+    rmpc sticker set "$FILE" "playCount" "$((sticker + 1))"
+fi
+
+#Send notification
+TMP_DIR="/tmp/rmpc"
+
+mkdir -p "$TMP_DIR"
+
+ALBUM_ART_PATH="$TMP_DIR/notification_cover"
+
+# Path to fallback album art if no album art is found by rmpc/mpd
+# Change this to your needs
+DEFAULT_ALBUM_ART_PATH="$TMP_DIR/default_album_art.jpg"
+
+# Save album art of the currently playing song to a file
+if ! rmpc albumart --output "$ALBUM_ART_PATH"; then
+    # Use default album art if rmpc returns non-zero exit code
+    ALBUM_ART_PATH="${DEFAULT_ALBUM_ART_PATH}"
+fi
+
+MSG_TITLE=$(urlencode "$TITLE")
+MSG_ARTIST=$(urlencode "$ARTIST")
+
+# Integrates with notify-send, but use whatever terminal notifier you have set up. 
+notify-send -i "${ALBUM_ART_PATH}" "Now Playing" "$ARTIST - $TITLE"
