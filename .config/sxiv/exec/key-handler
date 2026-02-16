@@ -4,11 +4,24 @@ while read file
 do
 	case $1 in 
 	  "s") 
-          ln -sf $(pwd)/$file ~/.local/share/wall.png && feh --bg-scale $file --no-fehbg ;;
+                ln -sf "$(pwd)/$file" ~/.local/share/wall.png && feh --bg-scale $file --no-fehbg ;;
+                # rm $XDG_DATA_HOME/wallpaper.png && \ 
+                # cp -f $file $XDG_DATA_HOME/wallpaper.png && \
+                # feh --bg-fill $XDG_DATA_HOME/wallpaper.png --no-fehbg ;;
 	  
 	  "l") 
-          ln -sf $(pwd)/$file ~/.local/share/lock.png && betterlockscreen --update ~/.local/share/lock.png --desc "Enter Password" ;;
+                ln -sf "$(pwd)/$file" ~/.local/share/lock.png && betterlockscreen --update ~/.local/share/lock.png --desc "Enter Password" ;;
+                # rm $XDG_DATA_HOME/lockscreen.png && \ 
+                # cp $file $XDG_DATA_HOME/lockscreen.png && \
+                # betterlockscreen --update $XDG_DATA_HOME/lockscreen.png --desc "Enter Password" > /dev/null ;;
 
+	  "S") 
+                convert $file -gravity Center -pointsize 40 -fill black -annotate +0+0 "$(echo "$(shuf -n 1 ~/.local/share/quotes.txt)")" ~/.local/share/wallpaper.png > /dev/null && \
+                feh --bg-fill ~/.local/share/wallpaper.png --no-fehbg > /dev/null;;
+	  
+	  "L") 
+                convert $file -gravity Center -pointsize 40 -annotate +0+0 "$(echo "$(shuf -n 1 ~/.local/share/quotes.txt)")" ~/.local/share/lockscreen.png > /dev/null && \
+                betterlockscreen --update ~/.local/share/lockscreen.png --desc "Enter Password" > /dev/null ;;
     "Delete") 
           [ "$(printf "No\\nYes" | dmenu -i -l 2 -p "Really delete $file?")" = "Yes" ] && rm "$file" && notify-send "$file deleted." ;;
 	esac
