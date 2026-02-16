@@ -5,32 +5,41 @@
 #  /\__/ / /^\ \ | | | |\  \ |/ / 
 #  \____/\/   \|_| |_|_| \_/___/  
 
-shift + Print 
-	$HOME/.local/bin/maimpick
-alt + 8 
-	$HOME/.local/bin/dmenumount
-alt + 9
-	$HOME/.local/bin/dmenuumount
+shift + Print
+    $HOME/.local/bin/maimpick
+super + 8
+    $HOME/.local/bin/dmenumount
+super + 9
+    $HOME/.local/bin/dmenuumount
 
 {F12,F11}
 XF86MonBrightness{Up,Down}
-	sudo light {-A 5,-U 5}
+    sudo light {-A 5,-U 5}
 
 # Volume and Music Bindings
 XF86Audio{RaiseVolume,LowerVolume,Mute}
-	pamixer -{i,d,t} 5 
-XF86Audio{Play,Next,Prev}
-	playerctl --player=mpd {play-pause,next,previous} 
-shift + XF86AudioPause
-	$TERMINAL -e ncmpcpp
+    pamixer -{i,d,t} 5
 
-shift + XF86Audio{Next,Prev}
-	mpc {seekthrough +00:00:05,seekthrough -00:00:05} 
+XF86Audio{Play,Next,Prev}
+    playerctl {play-pause,next,previous}
+
+shift + XF86AudioPause
+    $TERMINAL -e rmpc
+
+# shift + XF86Audio{Next,Prev}
+    # mpc {seekthrough +00:00:05,seekthrough -00:00:05} 
 
 # Utilites
-alt + F2
-  st -n floatterm -g 60x1 -e $HOME/.local/bin/ideapad-cm {enable,disable} && notify-send -t 3000 "$($HOME/.local/bin/ideapad-cm status)"
+super + F1
+    notify-send -t 3000 "$($HOME/.local/bin/ideapad-cm status)"
+super + F2
+    st -n floatterm -g 60x1 -e $HOME/.local/bin/ideapad-cm toggle &> /dev/null && \
+    notify-send -t 3000 "$($HOME/.local/bin/ideapad-cm status)"
+ctrl + shift + F
+   	zooc
 F10
-	$HOME/.local/bin/displayselect
-F6 
-	$HOME/.local/bin/trackpad
+    $HOME/.local/bin/displayselect
+F6
+    $HOME/.local/bin/trackpad
+F5
+    xset r rate 300 60 && notify-send -t 3000 "Setting Key Rate"
